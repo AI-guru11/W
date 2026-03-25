@@ -330,6 +330,495 @@
       *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     }
   </style>
+  <style>
+/* ===== Eye Drops Accessibility Enhancement Layer ===== */
+
+:root {
+  --med-strong-text: #111111;
+  --med-soft-text: #3a3140;
+  --med-border: #d93b90;
+  --med-border-soft: #eec0da;
+  --med-card-bg: #ffffff;
+  --med-card-bg-2: #fff9fc;
+  --med-success: #157347;
+  --med-success-dark: #0f5c37;
+  --med-success-bg: #e9f8ef;
+  --med-warning: #fff176;
+  --med-warning-border: #111111;
+  --med-button-bg: #ffffff;
+  --med-button-text: #111111;
+  --med-shadow: 0 10px 26px rgba(145, 39, 93, 0.08);
+}
+
+/* غلاف قسم القطرات */
+.eye-drops-section,
+.medications-section,
+[data-eye-drops-section] {
+  margin-top: 20px;
+}
+
+/* بطاقة القطرة */
+.drop-card,
+.med-card,
+.eyedrop-card,
+[data-drop-card] {
+  position: relative;
+  background: linear-gradient(180deg, var(--med-card-bg) 0%, var(--med-card-bg-2) 100%) !important;
+  border: 3px solid var(--med-border-soft) !important;
+  border-radius: 28px !important;
+  box-shadow: var(--med-shadow) !important;
+  overflow: hidden;
+}
+
+/* عنوان البطاقة */
+.drop-card h3,
+.med-card h3,
+.eyedrop-card h3,
+[data-drop-card] h3,
+.drop-card .med-name,
+.med-card .med-name,
+.eyedrop-card .med-name,
+[data-med-name] {
+  color: var(--med-strong-text) !important;
+  font-weight: 900 !important;
+  font-size: clamp(2rem, 5vw, 2.8rem) !important;
+  line-height: 1.3 !important;
+}
+
+/* النصوص الثانوية */
+.drop-card p,
+.med-card p,
+.eyedrop-card p,
+[data-drop-card] p,
+.drop-card .meta,
+.med-card .meta,
+.eyedrop-card .meta,
+[data-med-meta] {
+  color: var(--med-soft-text) !important;
+  font-weight: 800 !important;
+}
+
+/* صورة القطرة */
+.drop-card img,
+.med-card img,
+.eyedrop-card img,
+[data-drop-card] img {
+  border-radius: 24px !important;
+  border: 3px solid #efc9de !important;
+  background: #fff !important;
+}
+
+/* شريط التقدم */
+.med-progress,
+.drop-progress,
+[data-progress-box] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #ffffff !important;
+  border: 3px solid #efc9de !important;
+  border-radius: 22px !important;
+  padding: 16px 18px !important;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+}
+
+.med-progress strong,
+.drop-progress strong,
+[data-progress-text] {
+  color: var(--med-strong-text) !important;
+  font-size: clamp(1.6rem, 4vw, 2.1rem) !important;
+  font-weight: 900 !important;
+}
+
+.med-progress .badge,
+.drop-progress .badge,
+[data-progress-badge] {
+  min-width: 140px;
+  text-align: center;
+  background: #fff5fb !important;
+  border: 3px solid #e6bdd6 !important;
+  color: #9f2d6d !important;
+  border-radius: 999px !important;
+  padding: 12px 16px !important;
+  font-size: 1.3rem !important;
+  font-weight: 900 !important;
+}
+
+/* بطاقة الجرعة */
+.dose-row,
+.med-dose-row,
+[data-dose-row] {
+  position: relative;
+  background: #ffffff !important;
+  border: 3px solid #d9e7dc !important;
+  border-radius: 24px !important;
+  padding: 18px 16px !important;
+  margin-top: 14px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* الوقت */
+.dose-time,
+.med-dose-time,
+[data-dose-time] {
+  display: block;
+  text-align: center;
+  background: #ffffff !important;
+  color: #114a33 !important;
+  border: 3px solid #b7d8c3 !important;
+  border-radius: 18px !important;
+  padding: 14px 12px !important;
+  font-size: clamp(2rem, 5vw, 2.8rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+  margin-bottom: 14px !important;
+}
+
+/* حالة الجرعة */
+.dose-status,
+.med-dose-status,
+[data-dose-status] {
+  display: block;
+  color: #1f4f39 !important;
+  font-size: 1.6rem !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+  margin-bottom: 14px !important;
+}
+
+/* الزر الأساسي */
+.dose-btn,
+.done-btn,
+.med-dose-btn,
+[data-dose-done] {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 74px;
+  border-radius: 22px !important;
+  border: 3px solid #ffffff !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%) !important;
+  color: var(--med-button-text) !important;
+  font-size: clamp(1.5rem, 4vw, 1.9rem) !important;
+  font-weight: 900 !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.dose-btn:hover,
+.done-btn:hover,
+.med-dose-btn:hover,
+[data-dose-done]:hover {
+  transform: translateY(-1px);
+}
+
+/* حالة تم */
+.dose-row.is-done,
+.med-dose-row.is-done,
+[data-dose-row].is-done {
+  background: var(--med-success-bg) !important;
+  border-color: #9fd0b2 !important;
+}
+
+.dose-row.is-done .dose-time,
+.med-dose-row.is-done .dose-time,
+[data-dose-row].is-done [data-dose-time],
+.dose-row.is-done .med-dose-time,
+.med-dose-row.is-done .med-dose-time {
+  color: var(--med-success-dark) !important;
+  border-color: #9fd0b2 !important;
+  background: #f5fff9 !important;
+}
+
+.dose-row.is-done .dose-status,
+.med-dose-row.is-done .dose-status,
+[data-dose-row].is-done [data-dose-status] {
+  color: var(--med-success-dark) !important;
+}
+
+.dose-row.is-done .dose-btn,
+.med-dose-row.is-done .dose-btn,
+.dose-row.is-done .done-btn,
+.med-dose-row.is-done .done-btn,
+[data-dose-row].is-done [data-dose-done] {
+  background: linear-gradient(180deg, #40c980 0%, #25a85f 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(37, 168, 95, 0.22);
+}
+
+/* إبراز الجرعة القادمة */
+.dose-row.is-next,
+.med-dose-row.is-next,
+[data-dose-row].is-next {
+  border-color: var(--med-warning-border) !important;
+  box-shadow: 0 0 0 4px rgba(255, 241, 118, 0.6), 0 10px 24px rgba(0,0,0,0.08) !important;
+  background: linear-gradient(180deg, #fffef0 0%, #fff9d8 100%) !important;
+}
+
+.dose-row.is-next::before,
+.med-dose-row.is-next::before,
+[data-dose-row].is-next::before {
+  content: "الجرعة التالية";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  min-height: 38px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  z-index: 2;
+}
+
+/* زر تكبير البطاقة */
+.card-tools,
+[data-card-tools] {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.card-tool-btn,
+[data-open-card-fullscreen] {
+  min-height: 58px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  border: 2px solid #e2b6d1;
+  background: #ffffff;
+  color: #a12567;
+  font-size: 1.18rem;
+  font-weight: 900;
+  box-shadow: 0 6px 16px rgba(145, 39, 93, 0.06);
+}
+
+/* Overlay تكبير البطاقة */
+.med-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(255, 250, 252, 0.98);
+  backdrop-filter: blur(6px);
+  display: none;
+  padding: 16px;
+}
+
+.med-fullscreen.is-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.med-fullscreen__panel {
+  width: min(100%, 760px);
+  max-height: 100%;
+  overflow: auto;
+  background: #ffffff;
+  border: 4px solid var(--med-border);
+  border-radius: 28px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(145, 39, 93, 0.16);
+}
+
+.med-fullscreen__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.med-fullscreen__title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  color: #111111;
+  font-weight: 900;
+}
+
+.med-fullscreen__close {
+  min-height: 58px;
+  min-width: 132px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  border: 3px solid #ffffff;
+  background: #18151a;
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.med-fullscreen__content {
+  border: 3px solid #efc9de;
+  border-radius: 24px;
+  background: #fffafe;
+  padding: 18px;
+}
+
+.med-fullscreen__content .drop-card,
+.med-fullscreen__content .med-card,
+.med-fullscreen__content .eyedrop-card,
+.med-fullscreen__content [data-drop-card] {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* انفجار إنجاز بسيط */
+.done-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 3;
+}
+
+.done-burst span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: doneBurst 720ms ease-out forwards;
+}
+
+.done-burst span:nth-child(1) { background: #ffd54f; transform: translate(-50%, -50%) rotate(0deg) translateY(-8px); }
+.done-burst span:nth-child(2) { background: #ff5fa2; transform: translate(-50%, -50%) rotate(45deg) translateY(-8px); }
+.done-burst span:nth-child(3) { background: #9c27b0; transform: translate(-50%, -50%) rotate(90deg) translateY(-8px); }
+.done-burst span:nth-child(4) { background: #42a5f5; transform: translate(-50%, -50%) rotate(135deg) translateY(-8px); }
+.done-burst span:nth-child(5) { background: #66bb6a; transform: translate(-50%, -50%) rotate(180deg) translateY(-8px); }
+.done-burst span:nth-child(6) { background: #ff8a65; transform: translate(-50%, -50%) rotate(225deg) translateY(-8px); }
+.done-burst span:nth-child(7) { background: #ec407a; transform: translate(-50%, -50%) rotate(270deg) translateY(-8px); }
+.done-burst span:nth-child(8) { background: #26c6da; transform: translate(-50%, -50%) rotate(315deg) translateY(-8px); }
+
+@keyframes doneBurst {
+  0% {
+    opacity: 1;
+    transform-origin: center;
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--angle, 0deg))
+      translateY(-58px)
+      scale(0.25);
+  }
+}
+
+.done-pulse {
+  animation: donePulse 420ms ease-out;
+}
+
+@keyframes donePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* تقوية الأزرار العلوية على الجوال */
+@media (max-width: 560px) {
+  .access-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .toolbar-btn {
+    min-height: 72px !important;
+    font-size: 1.5rem !important;
+    border-width: 3px !important;
+  }
+
+  .med-progress,
+  .drop-progress,
+  [data-progress-box] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .med-progress .badge,
+  .drop-progress .badge,
+  [data-progress-badge] {
+    min-width: unset;
+  }
+
+  .dose-row.is-next::before,
+  .med-dose-row.is-next::before,
+  [data-dose-row].is-next::before {
+    position: static;
+    margin-bottom: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done-burst,
+  .done-burst span,
+  .done-pulse {
+    animation: none !important;
+  }
+}
+
+/* ===== Card Completion Status Indicator ===== */
+.card-status {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.status-img {
+  display: none;
+  width: 140px;
+  height: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.med-card.all-done .status-complete,
+[data-med-card].all-done .status-complete {
+  display: block;
+  transform: scale(1.05);
+}
+
+.med-card:not(.all-done) .status-incomplete,
+[data-med-card]:not(.all-done) .status-incomplete {
+  display: block;
+  opacity: 0.9;
+}
+
+/* ===== Reward Message Toast ===== */
+.reward-msg {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 1.4rem;
+  font-weight: 900;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  animation: rewardIn 0.25s ease forwards, rewardOut 0.35s ease 1.15s forwards;
+}
+@keyframes rewardIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+@keyframes rewardOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reward-msg { animation: none !important; opacity: 1 !important; }
+}
+  </style>
 </head>
 <body>
   <div class="page">
@@ -582,6 +1071,92 @@
     function clearAllDoseState() { localStorage.removeItem(getStorageKey()); }
     function getCompletedCount(drop) { return drop.times.filter((_, index) => getDoseStateFor(drop.id, index)).length; }
 
+    /* ===== Reward System ===== */
+    const _reduceMotion = () =>
+      document.body.classList.contains('reduce-motion') ||
+      (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    function playTone(freq, duration) {
+      if (_reduceMotion()) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        gain.gain.value = 0.03;
+        osc.start();
+        setTimeout(() => { try { osc.stop(); ctx.close(); } catch(e){} }, duration);
+      } catch(e){}
+    }
+
+    function showMessage(text) {
+      if (_reduceMotion()) {
+        /* still show message, just no animation — CSS handles that */
+      }
+      const el = document.createElement('div');
+      el.className = 'reward-msg';
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      el.textContent = text;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1500);
+    }
+
+    function _getTodayRewardKey(suffix) {
+      return 'reward_' + getTodayKey() + '_' + suffix;
+    }
+
+    function checkFullDayCompletion() {
+      if (localStorage.getItem(_getTodayRewardKey('fullday')) === '1') return;
+      const cards = document.querySelectorAll('.med-card');
+      if (!cards.length) return;
+      let allDone = true;
+      cards.forEach(card => {
+        if (!card.classList.contains('all-done')) allDone = false;
+      });
+      if (allDone) {
+        localStorage.setItem(_getTodayRewardKey('fullday'), '1');
+        playTone(600, 100);
+        setTimeout(() => playTone(800, 120), 120);
+        setTimeout(() => playTone(1000, 140), 260);
+        if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 120]);
+        showMessage('أُنجزت جميع جرعات اليوم');
+      }
+    }
+    /* ===== End Reward System ===== */
+
+    function updateCardStatus(card) {
+      const doses = card.querySelectorAll('[data-dose-row], .dose-row, .dose-item');
+      const total = doses.length;
+      let done = 0;
+      doses.forEach(d => {
+        if (d.classList.contains('is-done')) done++;
+      });
+      if (done === total && total > 0) {
+        const wasAlreadyDone = card.classList.contains('all-done');
+        card.classList.add('all-done');
+        if (!wasAlreadyDone) {
+          /* Card just became complete — fire card reward */
+          const dropId = card.querySelector('[data-drop-id]')?.getAttribute('data-drop-id') || 'unknown';
+          const rewardKey = _getTodayRewardKey('card_' + dropId);
+          if (localStorage.getItem(rewardKey) !== '1') {
+            localStorage.setItem(rewardKey, '1');
+            playTone(700, 120);
+            setTimeout(() => playTone(900, 150), 130);
+            if (navigator.vibrate) navigator.vibrate([60, 40, 100]);
+            showMessage('تمت جميع جرعات هذه القطرة');
+          }
+        }
+      } else {
+        card.classList.remove('all-done');
+        /* Clear the per-card reward flag if card is reset */
+        const dropId = card.querySelector('[data-drop-id]')?.getAttribute('data-drop-id') || 'unknown';
+        localStorage.removeItem(_getTodayRewardKey('card_' + dropId));
+      }
+    }
+
     function renderNextDose() {
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -650,12 +1225,21 @@
             <div class="progress-text">تم اليوم: ${completedCount} / ${drop.dailyCount}</div>
             <div class="progress-badge">${completedCount === drop.dailyCount ? "مكتمل" : "نشط"}</div>
           </div>
+          <div class="card-status">
+            <img src="assets/images/status/complete.jpg"
+                 class="status-img status-complete"
+                 alt="تم إكمال جميع الجرعات" />
+            <img src="assets/images/status/incomplete.jpg"
+                 class="status-img status-incomplete"
+                 alt="لم تكتمل الجرعات بعد" />
+          </div>
           <div class="dose-list">${doseListHtml}</div>
           <div class="med-footer">
             <button class="soft-btn" type="button" data-open-overlay data-overlay-title="${drop.name}" data-overlay-text="${drop.name} — تم اليوم ${completedCount} من ${drop.dailyCount}">تكبير البطاقة</button>
             <button class="reset-btn" type="button" data-reset-drop="${drop.id}">إعادة ضبط هذه القطرة</button>
           </div>`;
         eyeDropsGrid.appendChild(card);
+        updateCardStatus(card);
       });
       bindDynamicEvents();
       renderNextDose();
@@ -671,7 +1255,12 @@
           if (getDoseStateFor(dropId, doseIndex)) return;
           setDoseStateFor(dropId, doseIndex, true);
           createBurst(button);
-          setTimeout(renderEyeDrops, document.body.classList.contains("reduce-motion") ? 0 : 200);
+          /* Single-dose reward */
+          playTone(600, 120);
+          if (navigator.vibrate) navigator.vibrate(40);
+          showMessage('أحسنت');
+          const delay = document.body.classList.contains("reduce-motion") ? 0 : 200;
+          setTimeout(() => { renderEyeDrops(); checkFullDayCompletion(); }, delay);
         });
       });
 
@@ -716,6 +1305,7 @@
 
     updateTimer();
     renderEyeDrops();
+    checkFullDayCompletion();
     setInterval(updateTimer, 1000);
 
     const qrContainer = document.getElementById("qrcode");
@@ -727,6 +1317,296 @@
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.H
     });
+  </script>
+  <script>
+/* ===== Eye Drops Accessibility Enhancement Layer ===== */
+(function () {
+  const reduceMotion =
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const SELECTORS = {
+    cards: [
+      '[data-drop-card]',
+      '.drop-card',
+      '.med-card',
+      '.eyedrop-card'
+    ],
+    doseRows: [
+      '[data-dose-row]',
+      '.dose-row',
+      '.med-dose-row'
+    ],
+    doseButtons: [
+      '[data-dose-done]',
+      '.dose-btn',
+      '.done-btn',
+      '.med-dose-btn'
+    ],
+    doseTime: [
+      '[data-dose-time]',
+      '.dose-time',
+      '.med-dose-time'
+    ],
+    doseStatus: [
+      '[data-dose-status]',
+      '.dose-status',
+      '.med-dose-status'
+    ],
+    progressBox: [
+      '[data-progress-box]',
+      '.med-progress',
+      '.drop-progress'
+    ]
+  };
+
+  function qsa(list, root = document) {
+    const selector = list.join(', ');
+    return Array.from(root.querySelectorAll(selector));
+  }
+
+  function qs(list, root = document) {
+    const selector = list.join(', ');
+    return root.querySelector(selector);
+  }
+
+  function textIncludes(el, words) {
+    if (!el) return false;
+    const text = (el.textContent || '').trim();
+    return words.some(word => text.includes(word));
+  }
+
+  function createFullscreenLayer() {
+    if (document.getElementById('medFullscreen')) return;
+
+    const layer = document.createElement('div');
+    layer.id = 'medFullscreen';
+    layer.className = 'med-fullscreen';
+    layer.innerHTML = `
+      <div class="med-fullscreen__panel" role="dialog" aria-modal="true" aria-labelledby="medFullscreenTitle">
+        <div class="med-fullscreen__top">
+          <h3 id="medFullscreenTitle" class="med-fullscreen__title">تكبير البطاقة</h3>
+          <button id="medFullscreenClose" class="med-fullscreen__close" type="button">إغلاق</button>
+        </div>
+        <div id="medFullscreenContent" class="med-fullscreen__content"></div>
+      </div>
+    `;
+    document.body.appendChild(layer);
+
+    const closeBtn = layer.querySelector('#medFullscreenClose');
+    closeBtn.addEventListener('click', closeFullscreen);
+
+    layer.addEventListener('click', (e) => {
+      if (e.target === layer) closeFullscreen();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && layer.classList.contains('is-open')) {
+        closeFullscreen();
+      }
+    });
+  }
+
+  function openFullscreen(card) {
+    const layer = document.getElementById('medFullscreen');
+    const content = document.getElementById('medFullscreenContent');
+    const title = document.getElementById('medFullscreenTitle');
+    if (!layer || !content || !card) return;
+
+    const cardTitle =
+      card.querySelector('h3, .med-name, [data-med-name]')?.textContent?.trim() ||
+      'تكبير البطاقة';
+
+    title.textContent = cardTitle;
+    content.innerHTML = '';
+    content.appendChild(card.cloneNode(true));
+    layer.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFullscreen() {
+    const layer = document.getElementById('medFullscreen');
+    if (!layer) return;
+    layer.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function addFullscreenButtons() {
+    const cards = qsa(SELECTORS.cards);
+
+    cards.forEach((card) => {
+      if (card.querySelector('[data-open-card-fullscreen]')) return;
+
+      const toolWrap = document.createElement('div');
+      toolWrap.className = 'card-tools';
+      toolWrap.setAttribute('data-card-tools', '');
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'card-tool-btn';
+      btn.setAttribute('data-open-card-fullscreen', '');
+      btn.textContent = 'تكبير البطاقة';
+      btn.addEventListener('click', () => openFullscreen(card));
+
+      toolWrap.appendChild(btn);
+      card.appendChild(toolWrap);
+    });
+  }
+
+  function applyDoneStateFromText() {
+    const rows = qsa(SELECTORS.doseRows);
+
+    rows.forEach((row) => {
+      const statusEl = qs(SELECTORS.doseStatus, row);
+      const btn = qs(SELECTORS.doseButtons, row);
+      const statusText = (statusEl?.textContent || '').trim();
+      const btnText = (btn?.textContent || '').trim();
+
+      const isDone =
+        statusText.includes('تم') ||
+        btnText.includes('✓') ||
+        btnText.includes('مكتمل');
+
+      row.classList.toggle('is-done', isDone);
+    });
+  }
+
+  function parseTimeToMinutes(timeText) {
+    const cleaned = (timeText || '').trim();
+    const match = cleaned.match(/(\d{1,2})\s*:\s*(\d{2})/);
+    if (!match) return null;
+    const h = Number(match[1]);
+    const m = Number(match[2]);
+    if (Number.isNaN(h) || Number.isNaN(m)) return null;
+    return (h * 60) + m;
+  }
+
+  function markNextDose() {
+    const rows = qsa(SELECTORS.doseRows);
+    rows.forEach((row) => row.classList.remove('is-next'));
+
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    let bestRow = null;
+    let bestDelta = Infinity;
+
+    rows.forEach((row) => {
+      if (row.classList.contains('is-done')) return;
+
+      const timeEl = qs(SELECTORS.doseTime, row);
+      const mins = parseTimeToMinutes(timeEl?.textContent || '');
+      if (mins === null) return;
+
+      let delta = mins - currentMinutes;
+      if (delta < 0) delta += 24 * 60;
+
+      if (delta < bestDelta) {
+        bestDelta = delta;
+        bestRow = row;
+      }
+    });
+
+    if (bestRow) {
+      bestRow.classList.add('is-next');
+    }
+  }
+
+  function burst(button) {
+    if (!button || reduceMotion || document.body.classList.contains('reduce-motion')) return;
+
+    const burstWrap = document.createElement('div');
+    burstWrap.className = 'done-burst';
+
+    for (let i = 0; i < 8; i += 1) {
+      const dot = document.createElement('span');
+      dot.style.setProperty('--angle', `${i * 45}deg`);
+      burstWrap.appendChild(dot);
+    }
+
+    button.appendChild(burstWrap);
+    button.classList.add('done-pulse');
+
+    setTimeout(() => burstWrap.remove(), 800);
+    setTimeout(() => button.classList.remove('done-pulse'), 450);
+  }
+
+  function enhanceDoneButtons() {
+    const buttons = qsa(SELECTORS.doseButtons);
+
+    buttons.forEach((btn) => {
+      if (btn.dataset.enhancedDone === 'true') return;
+      btn.dataset.enhancedDone = 'true';
+
+      btn.addEventListener('click', () => {
+        const row = btn.closest(SELECTORS.doseRows.join(', '));
+        if (!row) return;
+
+        setTimeout(() => {
+          const statusEl = qs(SELECTORS.doseStatus, row);
+
+          row.classList.add('is-done');
+
+          if (statusEl && !statusEl.textContent.includes('تم')) {
+            statusEl.textContent = 'تم الاستخدام';
+          }
+
+          const btnText = (btn.textContent || '').trim();
+          if (!btnText.includes('تم')) {
+            btn.innerHTML = '✓ تم الاستخدام';
+          } else if (!btnText.includes('✓')) {
+            btn.innerHTML = '✓ ' + btnText;
+          }
+
+          burst(btn);
+          markNextDose();
+        }, 20);
+      });
+    });
+  }
+
+  function strengthenProgressUI() {
+    const boxes = qsa(SELECTORS.progressBox);
+
+    boxes.forEach((box) => {
+      if (box.dataset.progressEnhanced === 'true') return;
+      box.dataset.progressEnhanced = 'true';
+
+      const text = (box.textContent || '').trim();
+
+      const hasCounter = /\d+\s*\/\s*\d+/.test(text);
+      if (!hasCounter) return;
+
+      const counterMatch = text.match(/\d+\s*\/\s*\d+/);
+      const counter = counterMatch ? counterMatch[0] : '';
+
+      if (!box.querySelector('[data-progress-badge]')) {
+        const badge = document.createElement('div');
+        badge.className = 'badge';
+        badge.setAttribute('data-progress-badge', '');
+        badge.textContent = counter || '0 / 0';
+        box.appendChild(badge);
+      }
+    });
+  }
+
+  function init() {
+    createFullscreenLayer();
+    addFullscreenButtons();
+    applyDoneStateFromText();
+    strengthenProgressUI();
+    enhanceDoneButtons();
+    markNextDose();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  setInterval(markNextDose, 60000);
+})();
   </script>
 </body>
 </html>
