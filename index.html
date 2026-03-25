@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>موعد الغالية 🌸</title>
+    <!-- استدعاء مكتبة توليد الـ QR Code لضمان عمله دائماً -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
             --neon-pink: #FF69B4;
@@ -29,30 +31,6 @@
             overflow-x: hidden;
         }
 
-        /* أنيميشن الخلفية اللطيف */
-        .bg-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle 3s infinite ease-in-out;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
         .main-card {
             background: var(--card-bg);
             border: 2px solid var(--neon-pink);
@@ -65,7 +43,19 @@
             position: relative;
         }
 
-        .flower-icon { font-size: 65px; margin-bottom: 5px; display: block; filter: drop-shadow(0 0 10px var(--neon-pink)); }
+        /* أنيميشن الرأس (Header Animation) */
+        .flower-icon { 
+            font-size: 65px; 
+            margin-bottom: 5px; 
+            display: block; 
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+            animation: floatHeader 3s ease-in-out infinite;
+        }
+
+        @keyframes floatHeader {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); filter: drop-shadow(0 0 25px var(--neon-pink)); }
+        }
 
         h1 { color: var(--neon-pink); font-size: 38px; margin: 10px 0; text-shadow: var(--neon-glow); font-weight: 900; }
 
@@ -105,45 +95,53 @@
         .cd-num { font-size: 30px; font-weight: 900; }
         .cd-unit { font-size: 14px; font-weight: bold; }
 
-        /* زر الصوت الاحترافي */
-        .audio-btn {
-            background: var(--yellow-neon);
-            color: #000;
-            border: none;
-            width: 100%;
-            padding: 22px;
-            font-size: 24px;
-            font-weight: 900;
-            border-radius: 22px;
-            margin-top: 35px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #b3b300, 0 10px 20px rgba(255, 255, 0, 0.2);
+        /* تنسيق الـ QR Code الجديد */
+        .qr-wrapper {
+            margin-top: 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
-            transition: all 0.1s;
         }
 
-        .audio-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b3b300; }
+        .qr-container {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 20px;
+            border: 4px solid var(--neon-pink);
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
+            display: inline-block;
+        }
 
+        .qr-hint {
+            color: var(--soft-pink);
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
+        }
+
+        /* أنيميشن التذييل (Footer Animation) */
         .final-quote {
-            margin-top: 45px;
+            margin-top: 40px;
             font-size: 22px;
             color: var(--soft-pink);
             line-height: 1.6;
             font-weight: bold;
             padding: 0 10px;
-            text-shadow: 0 0 8px rgba(255, 182, 193, 0.4);
+            animation: pulseFooter 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseFooter {
+            0%, 100% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 182, 193, 0.4); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(255, 182, 193, 0.9); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="bg-stars" id="stars"></div>
-
     <main class="main-card">
+        <!-- الوردة المتحركة في الأعلى -->
         <span class="flower-icon">🌸</span>
         <h1>موعد الغالية</h1>
         <span class="clinic">عيادة الماء الأزرق</span>
@@ -164,28 +162,19 @@
             <div class="cd-item"><span id="minutes" class="cd-num">00</span><span class="cd-unit">دقيقة</span></div>
         </div>
 
-        <button class="audio-btn" onclick="speakDetails()" id="speakBtn">
-            <span>🔊</span> استماع للتفاصيل
-        </button>
+        <!-- قسم الـ QR Code الوردي -->
+        <div class="qr-wrapper">
+            <div id="qrcode" class="qr-container"></div>
+            <span class="qr-hint">امسح الكود لفتح الصفحة مباشرة</span>
+        </div>
 
+        <!-- العبارة الختامية المتحركة في الأسفل -->
         <p class="final-quote">
             "دام انا عايش تأكدي يا اجمل والطف قلب اني سندك وانك بأمان"
         </p>
     </main>
 
     <script>
-        // خلق نجوم في الخلفية
-        const starContainer = document.getElementById('stars');
-        for (let i = 0; i < 50; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = star.style.height = Math.random() * 3 + 'px';
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDelay = Math.random() * 3 + 's';
-            starContainer.appendChild(star);
-        }
-
         // العداد التنازلي
         const targetDate = new Date("April 15, 2026 07:45:00").getTime();
         function updateTimer() {
@@ -199,29 +188,18 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // نظام النطق الصوتي المدمج (آمن ومجاني للأبد)
-        function speakDetails() {
-            // إيقاف أي صوت حالي
-            window.speechSynthesis.cancel();
-
-            const text = "يا أغلى وألطف قلب، موعدك في عيادة الماء الأزرق هو يوم الأربعاء، الخامس عشر من أبريل، الساعة السابعة وخمسة وأربعين دقيقة صباحاً. وتذكري دائماً، دام أخوكِ حي، أنتِ في أمان وسندك موجود دائماً.";
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ar-SA'; // لغة عربية
-            utterance.rate = 0.85; // سرعة هادئة
-            utterance.pitch = 1.1; // طبقة صوت أنثوية ناعمة
-
-            // محاولة اختيار صوت أنثوي إذا توفر في النظام
-            const voices = window.speechSynthesis.getVoices();
-            const femaleVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Siri') || v.name.includes('Google'));
-            if (femaleVoice) utterance.voice = femaleVoice;
-
-            window.speechSynthesis.speak(utterance);
-        }
-
-        // تحميل الأصوات مسبقاً لضمان العمل فور الضغط
-        window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+        // توليد الـ QR Code باللون الوردي المفضل
+        const qrContainer = document.getElementById("qrcode");
+        new QRCode(qrContainer, {
+            text: "https://ai-guru11.github.io/W/",
+            width: 180, // العرض
+            height: 180, // الطول
+            colorDark : "#FF1493", // لون الباركود (وردي غامق/نيون)
+            colorLight : "#ffffff", // لون الخلفية (أبيض)
+            correctLevel : QRCode.CorrectLevel.H // دقة عالية لسهولة المسح
+        });
     </script>
 </body>
 </html>
+
 
