@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>موعد الغالية 🌸</title>
+    <style>
+        /* تعريف الألوان الأساسية */
+        :root {
+            --hot-pink: #FF69B4;
+            --deep-pink: #FF1493;
+            --soft-pink: #FFB6C1;
+            --high-contrast-yellow: #FFFF00;
+            --pure-white: #FFFFFF;
+            --dark-bg: #0a0a0a;
+            --box-bg: #1a1a1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--pure-white);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* خلفية القلوب المتحركة */
+        .animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: var(--soft-pink);
+            font-size: 30px;
+            animation: floatUp linear infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 5px rgba(255,105,180,0.5));
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.8) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        /* الحاوية الرئيسية */
+        .main-card {
+            background: rgba(20, 20, 20, 0.95);
+            border: 5px solid var(--deep-pink);
+            border-radius: 35px;
+            padding: 35px 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(255, 20, 147, 0.4);
+            text-align: center;
+            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .header-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        h1 {
+            color: var(--hot-pink);
+            font-size: 42px;
+            margin: 0 0 10px 0;
+            font-weight: 900;
+        }
+
+        .clinic-name {
+            color: var(--high-contrast-yellow);
+            font-size: 32px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--hot-pink);
+            padding-bottom: 15px;
+        }
+
+        /* صناديق المعلومات */
+        .info-box {
+            background: var(--box-bg);
+            margin: 20px 0;
+            padding: 25px 20px;
+            border-radius: 20px;
+            border-right: 10px solid var(--hot-pink);
+            text-align: right;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .info-label {
+            font-size: 24px;
+            color: #dddddd;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--pure-white);
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        /* العداد التنازلي */
+        .countdown-wrapper {
+            margin-top: 35px;
+            background: linear-gradient(135deg, var(--deep-pink), var(--hot-pink));
+            padding: 25px 15px;
+            border-radius: 25px;
+            color: var(--pure-white);
+            border: 3px solid var(--pure-white);
+        }
+
+        .countdown-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+            text-align: center;
+        }
+
+        .timer-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .time-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 15px;
+            min-width: 80px;
+        }
+
+        .time-number {
+            font-size: 36px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .time-text {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        /* زر النطق الصوتي */
+        .btn-speak {
+            background-color: var(--high-contrast-yellow);
+            color: #000000;
+            border: none;
+            width: 100%;
+            padding: 25px;
+            font-size: 30px;
+            font-weight: 900;
+            border-radius: 20px;
+            margin-top: 35px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b3b300;
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-speak:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #b3b300;
+        }
+
+        .quote {
+            margin-top: 35px;
+            font-size: 26px;
+            color: var(--soft-pink);
+            line-height: 1.6;
+            font-style: italic;
+            font-weight: bold;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- حاوية الأنيميشن -->
+    <div class="animation-container" id="anim-container" aria-hidden="true"></div>
+
+    <!-- البطاقة الرئيسية -->
+    <main class="main-card" role="main">
+        <span class="header-icon" aria-hidden="true">🌸</span>
+        <h1 tabindex="0">موعد الغالية</h1>
+        <span class="clinic-name" tabindex="0">عيادة الماء الأزرق</span>
+
+        <section class="info-box" tabindex="0" aria-label="تاريخ الموعد: الأربعاء 15 أبريل 2026">
+            <span class="info-label" aria-hidden="true">🗓️ اليوم والتاريخ</span>
+            <span class="info-value" aria-hidden="true">الأربعاء ١٥ أبريل</span>
+        </section>
+
+        <section class="info-box" tabindex="0" aria-label="وقت الموعد: السابعة وخمسة وأربعون دقيقة صباحاً">
+            <span class="info-label" aria-hidden="true">⏰ الوقت</span>
+            <span class="info-value" aria-hidden="true">٠٧:٤٥ صباحاً</span>
+        </section>
+
+        <section class="countdown-wrapper" aria-live="polite">
+            <span class="countdown-title">⏳ الوقت المتبقي للموعد</span>
+            <div class="timer-grid" id="timer-display">
+                <div class="time-segment">
+                    <span class="time-number" id="cd-days">00</span>
+                    <span class="time-text">يوم</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="cd-hours">00</span>
+                    <span class="time-text">ساعة</span>
+                </div>
+                <div class="time-segment">
+                    <span class="time-number" id="cd-mins">00</span>
+                    <span class="time-text">دقيقة</span>
+                </div>
+            </div>
+        </section>
+
+        <button class="btn-speak" onclick="playAudioDetails()" aria-label="استماع لتفاصيل الموعد صوتياً">
+            <span aria-hidden="true">🔊</span> استماع للتفاصيل
+        </button>
+        
+        <p class="quote" tabindex="0">
+            "نحن معكِ دائماً.. ستكونين بخير يا أجمل أخت"
+        </p>
+    </main>
+
+    <script>
+        // 1. نظام الأنيميشن (قلوب وورود)
+        const animContainer = document.getElementById('anim-container');
+        const icons = ['💗', '🌸', '✨', '💖'];
+        
+        function spawnFloatingIcon() {
+            const el = document.createElement('div');
+            el.className = 'floating-icon';
+            el.innerText = icons[Math.floor(Math.random() * icons.length)];
+            // موضع عشوائي أفقياً
+            el.style.left = Math.random() * 90 + 'vw';
+            // سرعة عشوائية بين 5 و 9 ثوانٍ
+            el.style.animationDuration = (Math.random() * 4 + 5) + 's';
+            // حجم عشوائي
+            el.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            
+            animContainer.appendChild(el);
+            
+            // تنظيف العنصر بعد انتهاء الأنيميشن
+            setTimeout(() => {
+                if(el.parentNode) el.parentNode.removeChild(el);
+            }, 9000);
+        }
+        // إطلاق أيقونة جديدة كل 800 جزء من الثانية
+        setInterval(spawnFloatingIcon, 800);
+
+        // 2. نظام العداد التنازلي
+        // الموعد: 15 أبريل 2026 الساعة 07:45 صباحاً بتوقيت السعودية
+        const appointmentDate = new Date("April 15, 2026 07:45:00").getTime();
+        
+        function padZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = appointmentDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('timer-display').innerHTML = '<span style="font-size:30px; font-weight:bold;">حان وقت الموعد 🙏</span>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById('cd-days').innerText = padZero(days);
+            document.getElementById('cd-hours').innerText = padZero(hours);
+            document.getElementById('cd-mins').innerText = padZero(minutes);
+        }, 1000);
+
+        // 3. نظام النطق الصوتي (Text-to-Speech)
+        function playAudioDetails() {
+            // إيقاف أي نطق سابق لتجنب التداخل
+            window.speechSynthesis.cancel();
+            
+            // النص المكتوب بعناية ليتم نطقه بشكل صحيح باللغة العربية
+            const announcement = "مرحباً يا غالية. موعدكِ في عِيادَةِ الماءِ الأزرق، هو يومُ الأربعاء، الخامسَ عشرَ مِنْ أَبْريل، في الساعةِ السابعةِ وخمسٍ وأربعينَ دقيقةً صَباحاً. نَحنُ مَعَكِ دائماً، وسَتَكونينَ بِخَيرٍ بِإذنِ الله.";
+            
+            const utterance = new SpeechSynthesisUtterance(announcement);
+            utterance.lang = 'ar-SA'; // تحديد اللهجة العربية السعودية إن توفرت
+            utterance.rate = 0.9; // تبطيء سرعة القراءة قليلاً لتكون واضحة
+            utterance.pitch = 1.1; // جعل نبرة الصوت ألطف قليلاً
+            
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
+
+
