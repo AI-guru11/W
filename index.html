@@ -232,6 +232,31 @@
       border: 2px solid rgba(223,47,141,0.16); color: var(--text-strong); font-size: 1.05rem; font-weight: 900;
     }
     .dose-status { color: var(--text-soft); font-size: 1rem; line-height: 1.7; font-weight: 800; }
+    .dose-status-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      line-height: 1.5;
+      text-align: center;
+      border: 2px solid transparent;
+      background: #fff7fb;
+      color: #8c2a59;
+    }
+    .dose-status-box.is-waiting {
+      background: #fff7fb;
+      color: #8c2a59;
+      border-color: rgba(223,47,141,0.18);
+    }
+    .dose-status-box.is-done {
+      background: #ecfff4;
+      color: #0f6a3a;
+      border-color: rgba(28,143,82,0.20);
+    }
     .dose-item.is-done {
       background: linear-gradient(180deg, #effff6 0%, #e2ffef 100%);
       border-color: rgba(28,143,82,0.28);
@@ -1186,7 +1211,9 @@
           return `
             <div class="dose-item ${done ? "is-done" : ""}">
               <div class="dose-time">${time}</div>
-              <div class="dose-status">${done ? "تم الاستخدام" : "بانتظار الاستخدام"}</div>
+              <div class="dose-status-box ${done ? "is-done" : "is-waiting"}">
+                ${done ? "تم الاستخدام" : "بانتظار الاستخدام"}
+              </div>
               <button
                 class="dose-btn ${done ? "is-done" : ""}"
                 type="button"
@@ -1245,42 +1272,109 @@
       renderNextDose();
     }
 
+    function refreshCardUI(card, dropId) {
+      const drop = eyeDrops.find(item => item.id === dropId);
+      if (!card || !drop) return;
+
+      const doseRows = card.querySelectorAll(".dose-item");
+      let completedCount = 0;
+
+      doseRows.forEach((row, index) => {
+        const done = getDoseStateFor(dropId, index);
+
+        row.classList.toggle("is-done", done);
+
+        const statusBox = row.querySelector(".dose-status-box");
+        if (statusBox) {
+          statusBox.textContent = done ? "تم الاستخدام" : "بانتظار الاستخدام";
+          statusBox.classList.toggle("is-done", done);
+          statusBox.classList.toggle("is-waiting", !done);
+        }
+
+        const btn = row.querySelector("[data-dose-btn]");
+        if (btn) {
+          btn.classList.toggle("is-done", done);
+          btn.disabled = done;
+          btn.setAttribute("aria-label", done ? "تم الاستخدام" : "تأكيد استخدام الجرعة");
+          btn.innerHTML = done ? "✓ تم الاستخدام" : "تم الاستخدام";
+        }
+
+        if (done) completedCount++;
+      });
+
+      const progressText = card.querySelector(".progress-text");
+      const progressBadge = card.querySelector(".progress-badge");
+
+      if (progressText) {
+        progressText.textContent = `تم اليوم: ${completedCount} / ${drop.dailyCount}`;
+      }
+
+      if (progressBadge) {
+        progressBadge.textContent = completedCount === drop.dailyCount ? "مكتمل" : "نشط";
+      }
+
+      updateCardStatus(card);
+      renderNextDose();
+    }
+
     function bindDynamicEvents() {
       document.querySelectorAll("[data-dose-btn]").forEach((button) => {
         if (button.dataset.bound === "true") return;
         button.dataset.bound = "true";
+
         button.addEventListener("click", () => {
           const dropId = button.getAttribute("data-drop-id");
           const doseIndex = Number(button.getAttribute("data-dose-index"));
+
           if (getDoseStateFor(dropId, doseIndex)) return;
+
+          const card = button.closest(".med-card");
+          if (!card) return;
+
           setDoseStateFor(dropId, doseIndex, true);
+
           createBurst(button);
-          /* Single-dose reward */
           playTone(600, 120);
           if (navigator.vibrate) navigator.vibrate(40);
-          showMessage('أحسنت');
-          const delay = document.body.classList.contains("reduce-motion") ? 0 : 200;
-          setTimeout(() => { renderEyeDrops(); checkFullDayCompletion(); }, delay);
+          showMessage("أحسنت");
+
+          const delay = document.body.classList.contains("reduce-motion") ? 0 : 180;
+
+          setTimeout(() => {
+            refreshCardUI(card, dropId);
+            checkFullDayCompletion();
+          }, delay);
         });
       });
 
       document.querySelectorAll("[data-reset-drop]").forEach((button) => {
         if (button.dataset.bound === "true") return;
         button.dataset.bound = "true";
+
         button.addEventListener("click", () => {
           const dropId = button.getAttribute("data-reset-drop");
+          const card = button.closest(".med-card");
+          if (!card) return;
+
           clearDoseStateFor(dropId);
-          renderEyeDrops();
+          refreshCardUI(card, dropId);
+          checkFullDayCompletion();
+          showMessage("تمت إعادة ضبط هذه القطرة");
         });
       });
 
       document.querySelectorAll("[data-open-overlay]").forEach((button) => {
         if (button.dataset.bound === "true") return;
         button.dataset.bound = "true";
+
         button.addEventListener("click", () => {
           const title = button.getAttribute("data-overlay-title") || "تكبير المحتوى";
           const mode = button.getAttribute("data-overlay-mode");
-          if (mode === "html") return openOverlay(title, button.getAttribute("data-overlay-html") || "", "html");
+
+          if (mode === "html") {
+            return openOverlay(title, button.getAttribute("data-overlay-html") || "", "html");
+          }
+
           openOverlay(title, button.getAttribute("data-overlay-text") || "");
         });
       });
@@ -1301,7 +1395,16 @@
       toggleMotionBtn.classList.toggle("is-active", isActive);
       toggleMotionBtn.setAttribute("aria-pressed", String(isActive));
     });
-    resetAllDosesBtn.addEventListener("click", () => { clearAllDoseState(); renderEyeDrops(); });
+    resetAllDosesBtn.addEventListener("click", () => {
+      clearAllDoseState();
+      document.querySelectorAll(".med-card").forEach((card) => {
+        const title = card.querySelector(".med-name")?.textContent?.trim();
+        const drop = eyeDrops.find(item => item.name === title);
+        if (drop) refreshCardUI(card, drop.id);
+      });
+      checkFullDayCompletion();
+      showMessage("تمت إعادة ضبط اليوم");
+    });
 
     updateTimer();
     renderEyeDrops();
