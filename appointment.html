@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موعد مراجعة المستشفى - عيادة الماء الأزرق</title>
+    <style>
+        :root {
+            --primary-pink: #FF69B4; /* Hot Pink */
+            --soft-pink: #FFB6C1; /* Light Pink */
+            --high-contrast-yellow: #FFFF00;
+            --dark-bg: #121212;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* أنيميشن القلوب في الخلفية */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--soft-pink);
+            font-size: 20px;
+            animation: float 6s infinite ease-in;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .card {
+            background: rgba(30, 30, 30, 0.95);
+            border: 4px solid var(--primary-pink);
+            border-radius: 30px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .clinic-name {
+            color: var(--high-contrast-yellow);
+            font-size: 28px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        .info-row {
+            background: #222;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 20px;
+            border-right: 8px solid var(--primary-pink);
+        }
+
+        .label {
+            display: block;
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            display: block;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* العداد التنازلي */
+        .countdown-container {
+            margin-top: 30px;
+            background: var(--primary-pink);
+            padding: 20px;
+            border-radius: 20px;
+            color: #000;
+        }
+
+        .countdown-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        #timer {
+            display: flex;
+            justify-content: space-around;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time-unit {
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-style: italic;
+            font-size: 22px;
+            color: var(--soft-pink);
+            line-height: 1.4;
+        }
+        
+        .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="hearts-bg" id="hearts-container"></div>
+
+    <div class="card">
+        <div class="icon">🌸</div>
+        <h1>موعد أختي الغالية</h1>
+        <span class="clinic-name">عيادة الماء الأزرق</span>
+
+        <div class="info-row">
+            <span class="label">🗓️ التاريخ</span>
+            <span class="value">الأربعاء، 15 أبريل 2026</span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">⏰ الوقت</span>
+            <span class="value">07:45 صباحاً</span>
+        </div>
+
+        <div class="countdown-container">
+            <span class="countdown-title">⏳ المتبقي على الموعد:</span>
+            <div id="timer">
+                <div class="time-box"><span id="days">0</span><span class="time-unit">يوم</span></div>
+                <div class="time-box"><span id="hours">0</span><span class="time-unit">ساعة</span></div>
+                <div class="time-box"><span id="minutes">0</span><span class="time-unit">دقيقة</span></div>
+                <div class="time-box"><span id="seconds">0</span><span class="time-unit">ثانية</span></div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            "عيناكِ أمانة، ونحن معكِ في كل خطوة.. ستكونين بخير يا جميلة."
+        </div>
+    </div>
+
+    <script>
+        // إنشاء قلوب عشوائية في الخلفية
+        const container = document.getElementById('hearts-container');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '💗';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 500);
+
+        // منطق العداد التنازلي
+        const targetDate = new Date("April 15, 2026 07:45:00").getTime();
+
+        const updateTimer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+
+            if (distance < 0) {
+                clearInterval(updateTimer);
+                document.getElementById("timer").innerHTML = "حان وقت الموعد 🌸";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+
